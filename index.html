@@ -13,7 +13,7 @@
 :root{
   --bg:#edf0ec; --surface:#fbfcfa; --ink:#1c2420; --muted:#5b6861; --rule:#cfd7d1;
   --accent:#c8392a; --accent-ink:#ffffff; --accent-soft:#f6e3df;
-  --paper:#ffffff; --paper-rule:#e4e9e5;
+  --paper:#ffffff; --paper-rule:#e4e9e5; --paper-check:#f0f2f0;
   --f-display:"Shippori Mincho B1","Hiragino Mincho ProN","Yu Mincho",serif;
   --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
   --radius:10px;
@@ -22,15 +22,18 @@
   :root:not([data-theme="light"]){
     --bg:#131816; --surface:#1c2320; --ink:#e6ebe7; --muted:#9ba8a1; --rule:#33403a;
     --accent:#ec6b57; --accent-ink:#1b0d0a; --accent-soft:#3a2420;
-    --paper:#f2f3ef; --paper-rule:#dde2de; color-scheme:dark;
+    --paper:#f2f3ef; --paper-rule:#dde2de; --paper-check:#e6e9e4; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#131816; --surface:#1c2320; --ink:#e6ebe7; --muted:#9ba8a1; --rule:#33403a;
   --accent:#ec6b57; --accent-ink:#1b0d0a; --accent-soft:#3a2420;
-  --paper:#f2f3ef; --paper-rule:#dde2de; color-scheme:dark;
+  --paper:#f2f3ef; --paper-rule:#dde2de; --paper-check:#e6e9e4; color-scheme:dark;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html,body{margin:0}
+img{max-width:100%}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;-webkit-text-size-adjust:100%}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px}
@@ -97,12 +100,14 @@ main{min-width:0;display:flex;flex-direction:column;gap:30px}
   background:
     linear-gradient(var(--paper-rule),var(--paper-rule)) center/1px 100% no-repeat,
     linear-gradient(var(--paper-rule),var(--paper-rule)) center/100% 1px no-repeat,
-    var(--paper)}
+    repeating-conic-gradient(var(--paper-check) 0 25%,var(--paper) 0 50%) 0 0/16px 16px}
 .paper canvas{display:block;max-width:100%;max-height:150px;width:auto;height:auto;transition:transform .15s ease}
 @media (hover:hover){.paper:hover canvas{transform:scale(1.04)}}
 .meta{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 10px 10px 12px;flex:1}
 .meta h3{margin:0;font-size:14.5px;font-weight:700;line-height:1.3}
 .meta p{margin:0;font-size:11.5px;color:var(--muted);line-height:1.3}
+.meta > div:first-child{min-width:0}
+.meta p{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .acts{display:flex;gap:5px;flex:none}
 .btn{font:inherit;font-size:13px;font-weight:700;border-radius:7px;padding:6px 10px;min-height:36px;cursor:pointer;border:1px solid var(--rule);background:var(--bg);color:var(--ink);white-space:nowrap;touch-action:manipulation}
 @media (hover:hover){.btn:hover{border-color:var(--ink)}}
@@ -112,7 +117,7 @@ main{min-width:0;display:flex;flex-direction:column;gap:30px}
 /* ---- 大きく見る ---- */
 .modal{position:fixed;inset:0;z-index:30;background:rgb(10 14 12 / .55);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
 .sheet{background:var(--surface);color:var(--ink);border-radius:14px;max-width:560px;width:100%;max-height:100%;overflow:auto;display:flex;flex-direction:column}
-.sheet .big{background:linear-gradient(var(--paper-rule),var(--paper-rule)) center/1px 100% no-repeat,linear-gradient(var(--paper-rule),var(--paper-rule)) center/100% 1px no-repeat,var(--paper);display:grid;place-items:center;padding:24px}
+.sheet .big{background:linear-gradient(var(--paper-rule),var(--paper-rule)) center/1px 100% no-repeat,linear-gradient(var(--paper-rule),var(--paper-rule)) center/100% 1px no-repeat,repeating-conic-gradient(var(--paper-check) 0 25%,var(--paper) 0 50%) 0 0/20px 20px;display:grid;place-items:center;padding:24px}
 .sheet .big img{max-width:100%;max-height:50vh;display:block;-webkit-touch-callout:default;-webkit-user-select:auto;user-select:auto}
 .sheet .foot{padding:14px 18px 18px;display:flex;flex-direction:column;gap:12px}
 .sheet h3{margin:0;font-family:var(--f-display);font-size:19px}
@@ -120,6 +125,14 @@ main{min-width:0;display:flex;flex-direction:column;gap:30px}
 .sheet .acts{gap:8px;flex-wrap:wrap}
 .sheet .btn{font-size:15px;padding:10px 16px;min-height:46px}
 
+.names .help-btn{align-self:flex-end;flex:none;min-height:48px;padding:8px 14px;font-size:14px}
+.help .foot{gap:14px}
+.help ol,.help ul{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:4px}
+.help h4{margin:0 0 4px;font-size:15px}
+.help section{display:flex;flex-direction:column;gap:2px}
+.help .lead{margin:0;font-size:14px;line-height:1.7}
+.help .rec{background:var(--accent-soft);border-radius:8px;padding:10px 12px}
+.help .acts{justify-content:flex-end}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--surface);padding:11px 18px;border-radius:999px;font-size:14px;z-index:40;width:max-content;max-width:calc(100% - 32px);text-align:center}
 
 /* ---- タブレット（1024px未満）：設定を上に、横並びで ---- */
@@ -136,6 +149,7 @@ main{min-width:0;display:flex;flex-direction:column;gap:30px}
 
 /* ---- スマホ（640px未満） ---- */
 @media (max-width:640px){
+  .names .help-btn{min-height:44px;padding:6px 10px}
   header.top{gap:10px;padding-block:10px 10px}
   .brand{flex-basis:100%;gap:10px}
   .mark{width:32px;height:32px;font-size:17px;border-width:2.5px}
@@ -182,6 +196,7 @@ main{min-width:0;display:flex;flex-direction:column;gap:30px}
     <div class="names">
       <label for="sei">名字<input id="sei" type="text" maxlength="6" autocomplete="off" value="山田"></label>
       <label for="mei">名前<input id="mei" type="text" maxlength="6" autocomplete="off" value="花子"></label>
+      <button class="btn help-btn" type="button" data-help>貼り方</button>
     </div>
   </header>
 
@@ -216,19 +231,28 @@ main{min-width:0;display:flex;flex-direction:column;gap:30px}
           <input id="orig" type="text" maxlength="15" value="ていねいにかけたね">
         </div>
         <div class="field">
+          <label class="lab" for="aword">どうぶつスタンプの言葉</label>
+          <input id="aword" type="text" maxlength="14" list="aword-list" placeholder="空欄ならそれぞれの言葉">
+          <datalist id="aword-list">
+            <option value="がんばったね"><option value="すごいね！"><option value="やったね！"><option value="いいね！">
+            <option value="ていねいだね"><option value="チャレンジしたね"><option value="よくかんがえたね"><option value="ばっちり！">
+            <option value="さすが！"><option value="字がきれいだね"><option value="なおせたね"><option value="さいごまでがんばったね">
+          </datalist>
+        </div>
+        <div class="field">
           <span class="lab">仕上げ</span>
           <div class="checks">
             <label><input type="checkbox" id="kasure" checked>かすれをつける</label>
             <label><input type="checkbox" id="tilt">少し傾ける</label>
             <label><input type="checkbox" id="tname" checked>先生スタンプに名字を入れる</label>
-            <label><input type="checkbox" id="white">背景を白にする</label>
+            <label><input type="checkbox" id="white">背景を白にする（ふだんは透明）</label>
           </div>
         </div>
         <div class="field">
           <span class="lab">画像の大きさ（高さ）</span>
           <div class="seg three" id="sizes"></div>
         </div>
-        <p class="note">Wordに貼ったら、画像を選んで「文字列の折り返し → 前面」にすると名前の上に重ねられます。Excelやスライドはそのまま重ねられます。</p>
+        <p class="note">画像の背景は透明です。Wordで文字がよけるときは、貼った画像を「前面」にします。<br><button class="btn" type="button" data-help style="margin-top:8px">名前の上に重ねる貼り方</button></p>
       </div>
     </details>
 
@@ -240,6 +264,10 @@ main{min-width:0;display:flex;flex-direction:column;gap:30px}
       <section>
         <div class="sec-h"><h2>先生のスタンプ</h2><span>ノート・プリント・学習カードに</span></div>
         <div class="grid" id="g-teacher"></div>
+      </section>
+      <section>
+        <div class="sec-h"><h2>どうぶつスタンプ</h2><span>前向きな言葉といっしょに。絵はこのアプリのオリジナルです</span></div>
+        <div class="grid" id="g-animal"></div>
       </section>
     </main>
   </div>
@@ -256,6 +284,45 @@ main{min-width:0;display:flex;flex-direction:column;gap:30px}
         <button class="btn" id="m-save" type="button">PNGで保存</button>
         <button class="btn" id="m-close" type="button">閉じる</button>
       </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="help" hidden>
+  <div class="sheet help" role="dialog" aria-modal="true" aria-labelledby="h-title">
+    <div class="foot">
+      <h3 id="h-title">名前の上に重ねる貼り方</h3>
+      <p class="lead">はんこの画像は背景が透明です。Wordで文字がよけてしまうのは、Wordが画像を「文字と同じ行」に置くためです。画像を「前面」に切りかえると、名前の上に重なります。</p>
+      <section class="rec">
+        <h4>Word：毎回はじめから重なるようにする（おすすめ）</h4>
+        <ol>
+          <li>「ファイル」→「オプション」→「詳細設定」を開く</li>
+          <li>「切り取り、コピー、貼り付け」の「図を挿入/貼り付ける形式」を「前面」にする</li>
+          <li>「OK」を押す。これからは貼るだけで名前に重ねられます</li>
+        </ol>
+      </section>
+      <section>
+        <h4>Word：その画像だけ重ねる</h4>
+        <ol>
+          <li>貼り付けた画像をクリック</li>
+          <li>画像の右上に出る「レイアウトオプション」ボタンから「前面」を選ぶ</li>
+          <li>ドラッグして名前の上へ動かす</li>
+        </ol>
+      </section>
+      <section>
+        <h4>そのほかのアプリ</h4>
+        <ul>
+          <li>Excel・PowerPoint・ロイロノート：貼るだけで重なります</li>
+          <li>Googleドキュメント：画像をクリックして、下に出るメニューで「テキストの前面」</li>
+        </ul>
+      </section>
+      <section>
+        <h4>白い四角が付いてしまうとき</h4>
+        <ul>
+          <li>設定の「背景を白にする」がオフになっているか確かめる</li>
+          <li>「保存」でPNGファイルにしてから、Wordの「挿入」→「画像」で入れる。コピーより確実に透明のまま入ります</li>
+        </ul>
+      </section>
+      <div class="acts"><button class="btn primary" id="h-close" type="button">閉じる</button></div>
     </div>
   </div>
 </div>
@@ -284,9 +351,9 @@ const DF = {family:'"Zen Kaku Gothic New", sans-serif', weight:700}; // 日付
 const SIZES = [{v:300,label:'小 300'},{v:600,label:'中 600'},{v:1200,label:'大 1200'}];
 
 const today = (() => { const d=new Date(); const p=n=>String(n).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`; })();
-const state = {sei:'山田', mei:'花子', ink:'shu', font:'mincho', date:today, era:'reiwa', top:'確認', orig:'ていねいにかけたね', kasure:true, tilt:false, tname:true, white:false, size:600};
+const state = {sei:'山田', mei:'花子', ink:'shu', font:'mincho', date:today, era:'reiwa', top:'確認', orig:'ていねいにかけたね', aword:'', kasure:true, tilt:false, tname:true, white:false, size:600};
 const KEY = 'hanko-kobo-v1';
-try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s) Object.assign(state, s, {date: today}); } catch(e) {}
+try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s) Object.assign(state, s, {date: today, white: false}); } catch(e) {}
 function persist(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {} }
 
 /* ---------- 描画ヘルパー ---------- */
@@ -455,6 +522,124 @@ const STAMPS = [
   }}
 ];
 
+
+/* ---------- どうぶつ（オリジナルの絵） ---------- */
+const AN = {
+  eye(c,x,y,r){ c.beginPath(); c.ellipse(x,y,r,r*1.18,0,0,TAU); c.fill(); c.save(); c.globalCompositeOperation='destination-out'; c.beginPath(); c.arc(x+r*.32,y-r*.42,r*.36,0,TAU); c.fill(); c.restore(); },
+  cheek(c,x,y,r){ c.save(); c.globalAlpha=.3; c.beginPath(); c.ellipse(x,y,r,r*.62,0,0,TAU); c.fill(); c.restore(); },
+  clear(c,fn){ c.save(); c.globalCompositeOperation='destination-out'; c.beginPath(); fn(); c.fill(); c.restore(); },
+  shape(c,fn,lw){ AN.clear(c,fn); c.lineWidth=lw; c.beginPath(); fn(); c.stroke(); },
+  heart(c,x,y,s){ c.beginPath(); c.moveTo(x,y+s*.35); c.bezierCurveTo(x-s*.9,y-s*.25,x-s*.35,y-s*.9,x,y-s*.35); c.bezierCurveTo(x+s*.35,y-s*.9,x+s*.9,y-s*.25,x,y+s*.35); c.fill(); },
+  sparkle(c,x,y,r){ star(c,x,y,r,r*.3,4); },
+  banner(c,S,word){
+    const cx=S/2,y=S*.82,w=S*.80,h=S*.2,n=h*.38,x0=cx-w/2,x1=cx+w/2;
+    c.beginPath(); c.moveTo(x0-n*.25,y-h/2); c.lineTo(x1+n*.25,y-h/2); c.lineTo(x1-n*.55,y); c.lineTo(x1+n*.25,y+h/2); c.lineTo(x0-n*.25,y+h/2); c.lineTo(x0+n*.55,y); c.closePath(); c.fill();
+    c.save(); c.globalCompositeOperation='destination-out'; textFit(c,word,cx,y,h*.56,w-n*2.4,TF); c.restore();
+  },
+  mouthW(c,x,y,r,lw){ c.lineWidth=lw; c.beginPath(); c.arc(x-r,y,r,0,Math.PI); c.moveTo(x+2*r,y); c.arc(x+r,y,r,0,Math.PI); c.stroke(); }
+};
+function animal(id,title,word,body){
+  return {id, group:'animal', title, word, draw(c,W,H,o){ const S=H; body(c,S,S/2,S*.40); AN.banner(c,S,o.aword||word); }};
+}
+STAMPS.push(
+  animal('neko','ねこ','がんばったね',(c,S,cx,fy)=>{
+    for (const sx of [-1,1]){ c.beginPath(); c.moveTo(cx+sx*S*.20,fy-S*.12); c.lineTo(cx+sx*S*.23,fy-S*.33); c.lineTo(cx+sx*S*.05,fy-S*.21); c.closePath(); c.fill(); }
+    AN.shape(c,()=>c.ellipse(cx,fy,S*.25,S*.21,0,0,TAU),S*.028);
+    AN.eye(c,cx-S*.09,fy-S*.015,S*.028); AN.eye(c,cx+S*.09,fy-S*.015,S*.028);
+    c.beginPath(); c.moveTo(cx-S*.018,fy+S*.04); c.lineTo(cx+S*.018,fy+S*.04); c.lineTo(cx,fy+S*.062); c.closePath(); c.fill();
+    AN.mouthW(c,cx,fy+S*.068,S*.02,S*.013);
+    c.lineWidth=S*.012; c.beginPath();
+    for (const sx of [-1,1]){ c.moveTo(cx+sx*S*.17,fy+S*.035); c.lineTo(cx+sx*S*.32,fy+S*.015); c.moveTo(cx+sx*S*.17,fy+S*.07); c.lineTo(cx+sx*S*.32,fy+S*.085); }
+    c.stroke();
+    AN.cheek(c,cx-S*.15,fy+S*.08,S*.035); AN.cheek(c,cx+S*.15,fy+S*.08,S*.035);
+    AN.sparkle(c,cx+S*.37,fy-S*.25,S*.045); AN.sparkle(c,cx-S*.38,fy-S*.08,S*.03);
+  }),
+  animal('inu','いぬ','すごいね！',(c,S,cx,fy)=>{
+    fy+=S*.01;
+    for (const sx of [-1,1]){ c.beginPath(); c.ellipse(cx+sx*S*.215,fy+S*.01,S*.07,S*.14,-sx*.35,0,TAU); c.fill(); }
+    AN.shape(c,()=>c.arc(cx,fy,S*.22,0,TAU),S*.028);
+    AN.eye(c,cx-S*.08,fy-S*.035,S*.027); AN.eye(c,cx+S*.08,fy-S*.035,S*.027);
+    c.lineWidth=S*.015; c.beginPath(); c.ellipse(cx,fy+S*.075,S*.085,S*.062,0,0,TAU); c.stroke();
+    c.beginPath(); c.ellipse(cx,fy+S*.052,S*.03,S*.021,0,0,TAU); c.fill();
+    AN.mouthW(c,cx,fy+S*.085,S*.022,S*.013);
+    AN.cheek(c,cx-S*.15,fy+S*.06,S*.032); AN.cheek(c,cx+S*.15,fy+S*.06,S*.032);
+    AN.heart(c,cx+S*.36,fy-S*.24,S*.075); AN.sparkle(c,cx-S*.37,fy-S*.22,S*.035);
+  }),
+  animal('usagi','うさぎ','やったね！',(c,S,cx,fy)=>{
+    fy=S*.44;
+    for (const sx of [-1,1]){
+      const ex=cx+sx*S*.085, ey=fy-S*.22, rot=sx*.14;
+      AN.shape(c,()=>c.ellipse(ex,ey,S*.055,S*.14,rot,0,TAU),S*.026);
+      c.save(); c.globalAlpha=.3; c.beginPath(); c.ellipse(ex,ey+S*.01,S*.022,S*.09,rot,0,TAU); c.fill(); c.restore();
+    }
+    AN.shape(c,()=>c.ellipse(cx,fy+S*.04,S*.23,S*.19,0,0,TAU),S*.028);
+    AN.eye(c,cx-S*.085,fy+S*.02,S*.026); AN.eye(c,cx+S*.085,fy+S*.02,S*.026);
+    c.beginPath(); c.ellipse(cx,fy+S*.07,S*.017,S*.012,0,0,TAU); c.fill();
+    c.lineWidth=S*.012; c.beginPath(); c.moveTo(cx,fy+S*.08); c.lineTo(cx,fy+S*.095); c.stroke();
+    AN.mouthW(c,cx,fy+S*.095,S*.017,S*.012);
+    AN.cheek(c,cx-S*.15,fy+S*.1,S*.033); AN.cheek(c,cx+S*.15,fy+S*.1,S*.033);
+    AN.sparkle(c,cx+S*.33,fy-S*.27,S*.045); AN.sparkle(c,cx-S*.33,fy-S*.2,S*.03);
+  }),
+  animal('kuma','くま','いいね！',(c,S,cx,fy)=>{
+    fy+=S*.02;
+    for (const sx of [-1,1]){ c.beginPath(); c.arc(cx+sx*S*.18,fy-S*.17,S*.075,0,TAU); c.fill(); AN.clear(c,()=>c.arc(cx+sx*S*.18,fy-S*.17,S*.035,0,TAU)); }
+    AN.shape(c,()=>c.arc(cx,fy,S*.23,0,TAU),S*.028);
+    AN.eye(c,cx-S*.085,fy-S*.03,S*.026); AN.eye(c,cx+S*.085,fy-S*.03,S*.026);
+    c.lineWidth=S*.015; c.beginPath(); c.ellipse(cx,fy+S*.075,S*.08,S*.058,0,0,TAU); c.stroke();
+    c.beginPath(); c.ellipse(cx,fy+S*.055,S*.028,S*.02,0,0,TAU); c.fill();
+    AN.mouthW(c,cx,fy+S*.085,S*.02,S*.012);
+    AN.cheek(c,cx-S*.155,fy+S*.06,S*.032); AN.cheek(c,cx+S*.155,fy+S*.06,S*.032);
+    AN.sparkle(c,cx+S*.36,fy-S*.05,S*.04); AN.heart(c,cx-S*.36,fy-S*.2,S*.06);
+  }),
+  animal('hiyoko','ひよこ','チャレンジしたね',(c,S,cx,fy)=>{
+    fy+=S*.03;
+    AN.shape(c,()=>c.arc(cx,fy,S*.24,0,TAU),S*.028);
+    c.lineWidth=S*.02; c.beginPath();
+    c.moveTo(cx,fy-S*.235); c.quadraticCurveTo(cx-S*.01,fy-S*.31,cx-S*.05,fy-S*.32);
+    c.moveTo(cx,fy-S*.235); c.quadraticCurveTo(cx+S*.015,fy-S*.32,cx+S*.06,fy-S*.33);
+    c.stroke();
+    AN.eye(c,cx-S*.08,fy-S*.02,S*.026); AN.eye(c,cx+S*.08,fy-S*.02,S*.026);
+    c.beginPath(); c.moveTo(cx-S*.045,fy+S*.035); c.lineTo(cx,fy+S*.01); c.lineTo(cx+S*.045,fy+S*.035); c.lineTo(cx,fy+S*.075); c.closePath(); c.fill();
+    c.lineWidth=S*.016;
+    for (const sx of [-1,1]){ c.beginPath(); c.ellipse(cx+sx*S*.185,fy+S*.1,S*.04,S*.07,-sx*.6,0,TAU); c.stroke(); }
+    AN.cheek(c,cx-S*.14,fy+S*.045,S*.03); AN.cheek(c,cx+S*.14,fy+S*.045,S*.03);
+    AN.sparkle(c,cx+S*.35,fy-S*.25,S*.045); AN.sparkle(c,cx-S*.36,fy-S*.12,S*.035);
+  }),
+  animal('pengin','ぺんぎん','ていねいだね',(c,S,cx,fy)=>{
+    fy+=S*.01;
+    c.beginPath(); c.ellipse(cx,fy,S*.25,S*.235,0,0,TAU); c.fill();
+    AN.clear(c,()=>{ c.arc(cx-S*.075,fy+S*.0,S*.12,0,TAU); c.moveTo(cx+S*.195,fy); c.arc(cx+S*.075,fy,S*.12,0,TAU); c.moveTo(cx+S*.17,fy+S*.09); c.ellipse(cx,fy+S*.09,S*.17,S*.11,0,0,TAU); });
+    AN.eye(c,cx-S*.075,fy-S*.01,S*.026); AN.eye(c,cx+S*.075,fy-S*.01,S*.026);
+    c.beginPath(); c.moveTo(cx-S*.035,fy+S*.045); c.lineTo(cx+S*.035,fy+S*.045); c.lineTo(cx,fy+S*.088); c.closePath(); c.fill();
+    AN.cheek(c,cx-S*.13,fy+S*.075,S*.03); AN.cheek(c,cx+S*.13,fy+S*.075,S*.03);
+    AN.sparkle(c,cx+S*.36,fy-S*.22,S*.045); AN.sparkle(c,cx-S*.36,fy-S*.16,S*.03);
+  }),
+  animal('kaeru','かえる','よくかんがえたね',(c,S,cx,fy)=>{
+    fy+=S*.03;
+    for (const sx of [-1,1]) AN.shape(c,()=>c.arc(cx+sx*S*.13,fy-S*.12,S*.09,0,TAU),S*.026);
+    AN.shape(c,()=>c.ellipse(cx,fy+S*.05,S*.27,S*.18,0,0,TAU),S*.028);
+    for (const sx of [-1,1]){ c.beginPath(); c.arc(cx+sx*S*.13,fy-S*.13,S*.042,0,TAU); c.fill(); AN.clear(c,()=>c.arc(cx+sx*S*.13+S*.014,fy-S*.145,S*.015,0,TAU)); }
+    c.lineWidth=S*.02; c.beginPath(); c.arc(cx,fy-S*.02,S*.15,.22*Math.PI,.78*Math.PI); c.stroke();
+    AN.cheek(c,cx-S*.18,fy+S*.08,S*.035); AN.cheek(c,cx+S*.18,fy+S*.08,S*.035);
+    AN.sparkle(c,cx+S*.37,fy-S*.24,S*.045); AN.sparkle(c,cx-S*.37,fy-S*.24,S*.03);
+  }),
+  animal('panda','ぱんだ','ばっちり！',(c,S,cx,fy)=>{
+    fy+=S*.02;
+    for (const sx of [-1,1]){ c.beginPath(); c.arc(cx+sx*S*.175,fy-S*.165,S*.07,0,TAU); c.fill(); }
+    AN.shape(c,()=>c.arc(cx,fy,S*.235,0,TAU),S*.028);
+    for (const sx of [-1,1]){
+      const x=cx+sx*S*.09;
+      c.beginPath(); c.ellipse(x,fy-S*.005,S*.055,S*.075,-sx*.5,0,TAU); c.fill();
+      AN.clear(c,()=>c.arc(x+sx*S*.004,fy-S*.015,S*.021,0,TAU));
+      c.beginPath(); c.arc(x+sx*S*.004,fy-S*.012,S*.011,0,TAU); c.fill();
+    }
+    c.beginPath(); c.ellipse(cx,fy+S*.075,S*.028,S*.02,0,0,TAU); c.fill();
+    AN.mouthW(c,cx,fy+S*.1,S*.02,S*.012);
+    AN.cheek(c,cx-S*.16,fy+S*.1,S*.03); AN.cheek(c,cx+S*.16,fy+S*.1,S*.03);
+    AN.sparkle(c,cx+S*.36,fy-S*.2,S*.045); AN.heart(c,cx-S*.36,fy-S*.1,S*.06);
+  })
+);
+
 /* ---------- 乱数・かすれ ---------- */
 function hash(str){ let h=2166136261; for (const ch of str){ h^=ch.codePointAt(0); h=Math.imul(h,16777619); } return h>>>0; }
 function rng(seed){ let a=seed||1; return ()=>{ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
@@ -472,7 +657,7 @@ function dateStr(){
   const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), dd=String(d.getDate()).padStart(2,'0');
   return state.era==='reiwa' ? `R${y-2018}.${m}.${dd}` : `${y}.${m}.${dd}`;
 }
-function opts(){ return {sei:state.sei.trim(), mei:state.mei.trim(), top:state.top.trim(), orig:state.orig, date:dateStr(), font:FONTS[state.font], tname:state.tname}; }
+function opts(){ return {sei:state.sei.trim(), mei:state.mei.trim(), top:state.top.trim(), orig:state.orig, date:dateStr(), font:FONTS[state.font], tname:state.tname, aword:state.aword.trim()}; }
 
 function renderInto(def,cv){
   const H=state.size, W=Math.round(H*(def.ar||1));
@@ -504,8 +689,8 @@ for (const def of STAMPS){
   el.querySelector('.paper').addEventListener('click',()=>openModal(def,cv));
   el.querySelector('[data-a=copy]').addEventListener('click',()=>copyCanvas(def,cv));
   el.querySelector('[data-a=save]').addEventListener('click',()=>saveCanvas(def,cv));
-  $(def.group==='name'?'#g-name':'#g-teacher').appendChild(el);
-  cards[def.id]={def,cv};
+  $({name:'#g-name',teacher:'#g-teacher',animal:'#g-animal'}[def.group]).appendChild(el);
+  cards[def.id]={def,cv,sub:el.querySelector('p')};
 }
 
 function buildSeg(host,items,key,cls){
@@ -531,7 +716,7 @@ buildSeg($('#fonts'),Object.entries(FONTS).map(([k,f])=>({v:k,label:f.label,k}))
 buildSeg($('#sizes'),SIZES,'size');
 
 const bindText=(id,key)=>{ const el=$('#'+id); el.value=state[key]; el.addEventListener('input',()=>{ state[key]=el.value; update(); }); };
-bindText('sei','sei'); bindText('mei','mei'); bindText('topword','top'); bindText('orig','orig'); bindText('date','date');
+bindText('sei','sei'); bindText('mei','mei'); bindText('topword','top'); bindText('orig','orig'); bindText('aword','aword'); bindText('date','date');
 const era=$('#era'); era.value=state.era; era.addEventListener('change',()=>{ state.era=era.value; update(); });
 for (const k of ['kasure','tilt','tname','white']){ const el=$('#'+k); el.checked=state[k]; el.addEventListener('change',()=>{ state[k]=el.checked; update(); }); }
 if (window.matchMedia('(max-width:640px)').matches) $('#rail').open=false;
@@ -541,11 +726,11 @@ function showNow(){ const n=$('#now'); if(n) n.textContent=INKS[state.ink].label
 let loadToken=0, timer=null;
 async function renderAll(){
   const my=++loadToken;
-  const txt=state.sei+state.mei+state.top+state.orig+'印之合格よくできましたたいへんがんばりみもうすこしていねいR0123456789.';
+  const txt=state.sei+state.mei+state.top+state.orig+state.aword+'がんばったねすごいやったいいチャレンジしたていねいだよくかんがえたばっちり！印之合格よくできましたたいへんがんばりみもうすこしていねいR0123456789.';
   const specs=[...Object.values(FONTS),TF,DF].map(f=>`${f.weight} 100px ${f.family}`);
   try { await Promise.all(specs.map(s=>document.fonts.load(s,txt).catch(()=>{}))); } catch(e) {}
   if (my!==loadToken) return;
-  for (const {def,cv} of Object.values(cards)) renderInto(def,cv);
+  for (const {def,cv,sub} of Object.values(cards)){ renderInto(def,cv); if (def.word) sub.textContent='「'+(state.aword.trim()||def.word)+'」'; }
   if (currentModal) refreshModal();
 }
 function update(){ showNow(); persist(); clearTimeout(timer); timer=setTimeout(renderAll,120); }
@@ -554,7 +739,7 @@ if (document.fonts && document.fonts.addEventListener) document.fonts.addEventLi
 
 /* ---------- コピー・保存 ---------- */
 const toastEl=$('#toast'); let toastT=null;
-function toast(msg){ toastEl.textContent=msg; toastEl.hidden=false; clearTimeout(toastT); toastT=setTimeout(()=>toastEl.hidden=true,2600); }
+function toast(msg,ms){ toastEl.textContent=msg; toastEl.hidden=false; clearTimeout(toastT); toastT=setTimeout(()=>toastEl.hidden=true,ms||2600); }
 function fileName(def){ return `はんこ_${def.title}_${(state.sei||'名前').trim()}.png`; }
 
 async function copyCanvas(def,cv){
@@ -562,7 +747,7 @@ async function copyCanvas(def,cv){
     if (!navigator.clipboard || !window.ClipboardItem) throw new Error('no');
     const p=new Promise((res,rej)=>cv.toBlob(b=>b?res(b):rej(new Error('blob')),'image/png'));
     await navigator.clipboard.write([new ClipboardItem({'image/png':p})]);
-    toast('コピーしました。Word・Excel・スライドに貼り付けできます');
+    toast('コピーしました（背景は透明）。Wordでは貼ったあと「前面」にすると名前に重なります',4500);
   } catch(e) {
     openModal(def,cv,'copy');
   }
@@ -606,6 +791,11 @@ function refreshModal(){
 }
 function closeModal(){ modal.hidden=true; currentModal=null; }
 $('#m-close').addEventListener('click',closeModal);
+const help=$('#help');
+document.querySelectorAll('[data-help]').forEach(b=>b.addEventListener('click',()=>{ help.hidden=false; $('#h-close').focus(); }));
+$('#h-close').addEventListener('click',()=>{ help.hidden=true; });
+help.addEventListener('click',e=>{ if (e.target===help) help.hidden=true; });
+document.addEventListener('keydown',e=>{ if (e.key==='Escape') help.hidden=true; });
 modal.addEventListener('click',e=>{ if (e.target===modal) closeModal(); });
 document.addEventListener('keydown',e=>{ if (e.key==='Escape' && !modal.hidden) closeModal(); });
 $('#m-copy').addEventListener('click',()=>{ const m=currentModal; if (m){ m.mode=null; copyCanvas(m.def,m.cv); refreshModal(); } });
